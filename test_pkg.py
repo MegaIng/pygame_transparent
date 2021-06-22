@@ -3,8 +3,8 @@ from pygame_transparent import transparent
 
 pg.init()
 
-W, H = 640, 480
-FLAGS = 0
+W, H = 0, 0
+FLAGS = pg.NOFRAME
 
 screen = pg.display.set_mode((W, H), FLAGS)
 W, H = screen.get_size()
@@ -27,11 +27,13 @@ while running:
             start = event.pos
         elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
             r = pg.Rect(start, (event.pos[0]-start[0],event.pos[1]-start[1]))
+            r.normalize()
+            r.clamp_ip((0,0,W,H))
             trans.add(r)
         elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
             trans.clear()
     # Logic
-    dt = clock.tick()
+    dt = clock.tick(30)
 
     # Render
     screen.fill((0, 0, 0))

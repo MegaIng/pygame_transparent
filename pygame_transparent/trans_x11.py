@@ -17,7 +17,13 @@ class X11Transparent(Transparent):
         info = pg.display.get_wm_info()
         self._display = PyCapsule_GetPointer(info["display"], b"display")
         self._window = info["window"]
-        if not XShapeQueryExtension(self._display):
+        t = XShapeQueryExtension(self._display)
+        print(t)
+        if not t:
+            raise RuntimeError("Shape Extension not available")
+        v = XShapeQueryVersion(self._display)
+        print(v)
+        if not v:
             raise RuntimeError("Shape Extension not available")
         self._reg = XCreateRegion()
 
